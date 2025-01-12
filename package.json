@@ -1,5 +1,5 @@
 {
-  "name": "final-elent-cms",
+  "name": "eleventy-project",
   "version": "1.0.0",
   "description": "A multilingual Eleventy project with sitemap integration.",
   "main": ".eleventy.js",
