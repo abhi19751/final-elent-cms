@@ -1,0 +1,19 @@
+{
+  "name": "eleventy-project",
+  "version": "1.0.0",
+  "description": "A multilingual Eleventy project with sitemap integration.",
+  "main": ".eleventy.js",
+  "scripts": {
+    "start": "npx @11ty/eleventy --serve",
+    "build": "npx @11ty/eleventy",
+    "debug": "DEBUG=* npx @11ty/eleventy --serve"
+  },
+  "keywords": ["eleventy", "static site generator", "multilingual", "sitemap"],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "@11ty/eleventy": "^2.0.0",
+    "@quasibit/eleventy-plugin-sitemap": "^1.2.0"
+  },
+  "dependencies": {}
+}
