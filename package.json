@@ -1,19 +1,16 @@
 {
   "name": "final-elent-cms",
   "version": "1.0.0",
-  "description": "A multilingual Eleventy project with sitemap integration.",
-  "main": ".eleventy.js",
+  "description": "A CMS built with Eleventy",
+  "main": "index.js",
   "scripts": {
-    "start": "npx @11ty/eleventy --serve",
-    "build": "npx @11ty/eleventy",
-    "debug": "DEBUG=* npx @11ty/eleventy --serve"
+    "build": "eleventy",
+    "start": "eleventy --serve"
   },
-  "keywords": ["eleventy", "static site generator", "multilingual", "sitemap"],
+  "dependencies": {
+    "eleventy": "^2.0.0"
+  },
+  "devDependencies": {},
   "author": "Your Name",
-  "license": "MIT",
-  "devDependencies": {
-    "@11ty/eleventy": "^2.0.0",
-    "@quasibit/eleventy-plugin-sitemap": "^2.0.0"
-  },
-  "dependencies": {}
+  "license": "MIT"
 }
