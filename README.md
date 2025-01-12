@@ -1,35 +1,59 @@
-Aapke 12-page static website ko multiple languages mein convert karne ke liye, Eleventy ka istemal karte hue, aapko kuch specific configurations aur directory structures set karni hongi. Main aapko step-by-step samjhaata hoon ki kaise aap apne project ko organize kar sakte hain aur automatic language-specific URLs generate kar sakte hain.
+1. src/_includes/base.njk
 
-1. Directory Structure
-Aapko apne project ki directory structure kuch is tarah se set karni hogi:
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ title }}</title>
+  <meta name="description" content="{{ description }}">
+  <meta name="keywords" content="{{ keywords }}">
+  {% if canonical %}
+    <link rel="canonical" href="{{ canonical }}">
+  {% endif %}
 
-css
-Copy code
-├── src/
-│   ├── _data/
-│   │   ├── en.json
-│   │   ├── hi.json
-│   ├── pages/
-│   │   ├── index.njk
-│   │   ├── about.njk
-└── .eleventy.js
-Explanation:
+</head>
+<body>
+  {% block content %}{% endblock %}
+</body>
+</html>
 
-src/: Yeh aapka source directory hai jahan aapka saara content hoga.
-_data/: Is directory mein aap apne language-specific JSON data files rakh sakte hain.
-en.json: English content ke liye.
-hi.json: Hindi content ke liye.
-pages/: Is directory mein aapke page templates honge.
-index.njk: Homepage ka template.
-about.njk: About page ka template.
-.eleventy.js: Eleventy ka configuration file.
-2. Language-Specific JSON Data Files
-Har language ke liye ek JSON file banaiye jisme aapke pages ka content ho. Jaise:
 
-en.json:
+2. .eleventy.js
 
-json
-Copy code
+module.exports = function(eleventyConfig) {
+  eleventyConfig.addDataExtension("json", contents => JSON.parse(contents));
+
+  eleventyConfig.addPassthroughCopy("assets");
+
+  return {
+    dir: {
+      input: "src",
+      output: "_site"
+    },
+
+    templateFormats: ["njk"],
+    passthroughFileCopy: true,
+    markdownTemplateEngine: "njk"
+  };
+};
+
+const sitemap = require("@quasibit/eleventy-plugin-sitemap");
+
+module.exports = function(eleventyConfig) {
+  eleventyConfig.addPlugin(sitemap, {
+    sitemap: {
+      hostname: "https://example.com",
+    },
+  });
+  // Additional configurations
+};
+
+
+
+
+
+3._data/en.json
+
 {
   "homepage": {
     "title": "Welcome to Our Tool",
@@ -40,10 +64,11 @@ Copy code
     "description": "We provide tools for enhancing your online experience."
   }
 }
-hi.json:
 
-json
-Copy code
+
+
+4. _data/hi.json
+
 {
   "homepage": {
     "title": "हमारे टूल में स्वागत है",
@@ -54,75 +79,26 @@ Copy code
     "description": "हम आपके ऑनलाइन अनुभव को बढ़ाने के लिए टूल प्रदान करते हैं।"
   }
 }
-3. Eleventy Configuration (.eleventy.js)
-Eleventy ko configure karte hue, aapko language-specific data ko include karna hoga aur custom permalinks set karne honge.
 
-javascript
-Copy code
-module.exports = function(eleventyConfig) {
-  // Language-specific data ko include karna
-  eleventyConfig.addDataExtension("json", contents => JSON.parse(contents));
 
-  // Passthrough copy for static assets
-  eleventyConfig.addPassthroughCopy("assets");
-
-  return {
-    dir: {
-      input: "src",
-      output: "_site"
-    },
-    // Template formats aur other configurations
-    templateFormats: ["njk"],
-    passthroughFileCopy: true,
-    markdownTemplateEngine: "njk"
-  };
-};
-4. Language-Specific Templates
-Har page ka template (e.g., index.njk, about.njk) mein language-specific content ko render karen.
-
-index.njk:
-
-html
-Copy code
-<h1>{{ homepage.title }}</h1>
-<p>{{ homepage.description }}</p>
-about.njk:
-
-html
-Copy code
-<h1>{{ about.title }}</h1>
-<p>{{ about.description }}</p>
-5. Automatic Language-Specific URLs
-Eleventy mein language-specific URLs generate karne ke liye, aapko custom permalinks set karne honge. Aap apne Eleventy configuration mein permalink property ka use kar sakte hain.
-
-index.njk:
-
-html
-Copy code
+page/index.njk
 ---
-permalink: "{{ lang }}/index.html"
+layout: base.njk
+permalink: "/{{ lang }}/{{ page.fileSlug }}/"
 ---
-<h1>{{ homepage.title }}</h1>
-<p>{{ homepage.description }}</p>
-about.njk:
 
-html
-Copy code
+
+{% block content %}
+<h1>Welcome!</h1>
+<p>This is the homepage.</p>
+{% endblock %}
+
+
+5. src/sitemap.njk
+
 ---
-permalink: "{{ lang }}/about/index.html"
+permalink: {{ lang }}/sitemap.xml
+eleventyExcludeFromCollections: true
 ---
-<h1>{{ about.title }}</h1>
-<p>{{ about.description }}</p>
-Is tarah se, jab aap Eleventy ko build karenge, to har language ke liye alag URLs generate ho jayenge, jaise:
 
-/en/index.html (English homepage)
-/en/about/index.html (English about page)
-/hi/index.html (Hindi homepage)
-/hi/about/index.html (Hindi about page)
-6. Language Switching
-Aap apne pages mein language switcher implement kar sakte hain, jise user select karein aur page ko switch karein. Aap URL parameters ya cookies ka use kar sakte hain, jaise /?lang=en, /?lang=hi, etc.
-
-7. Build and Deployment
-Jab aap Eleventy ko build karenge, to har language ke liye alag pages generate honge jo aapke specified URLs par available honge. Aap apne static site ko kisi bhi hosting platform par deploy kar sakte hain.
-
-Agar aapko koi aur specific help chahiye ho to please bataiye!
+{% sitemap collections.all %}
