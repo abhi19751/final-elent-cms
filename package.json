@@ -1,16 +1,26 @@
 {
   "name": "final-elent-cms",
   "version": "1.0.0",
-  "description": "A CMS built with Eleventy",
+  "description": "Multilingual tool for social media platforms",
   "main": "index.js",
   "scripts": {
+    "start": "eleventy --serve",
     "build": "eleventy",
-    "start": "eleventy --serve"
+    "debug": "DEBUG=* eleventy"
   },
   "dependencies": {
-    "eleventy": "^2.0.0"
+    "@11ty/eleventy": "^2.0.1",
+    "@quasibit/eleventy-plugin-sitemap": "^2.2.0"
   },
-  "devDependencies": {},
-  "author": "Your Name",
-  "license": "MIT"
+  "devDependencies": {
+    "cross-env": "^7.0.3"
+  },
+  "keywords": [
+    "eleventy",
+    "11ty",
+    "multilingual",
+    "static-site"
+  ],
+  "author": "",
+  "license": "ISC"
 }
