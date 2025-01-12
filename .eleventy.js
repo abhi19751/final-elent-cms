@@ -5,7 +5,7 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("assets");
   eleventyConfig.addPlugin(sitemap, {
     sitemap: {
-      hostname: "https://example.com",
+      hostname: "https://final-elent-cms.pages.dev",
     },
   });
 
